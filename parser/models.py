@@ -16,6 +16,8 @@ class Item(BaseModel):
     supplierId: int
     supplierRating: float 
     volume: int 
+    pics: int 
+    image_links: str = None
 
     @root_validator(pre=True)
     def convert_price(cls, values):
