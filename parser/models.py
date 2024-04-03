@@ -18,6 +18,7 @@ class Item(BaseModel):
     volume: int 
     pics: int 
     image_links: str = None
+    description: str = None
 
     @root_validator(pre=True)
     def convert_price(cls, values):
