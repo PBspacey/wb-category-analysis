@@ -1,4 +1,6 @@
 # id, название, цена, бренд, рейтинг, количество оценок, айди поставщика, рейтинг поставщика, картинка, описание
+import asyncio 
+import aiohttp
 import requests 
 import re
 import csv
@@ -34,7 +36,7 @@ class Parser:
     def parse(self):
         page = 1
         self.__create_csv()
-        while True:
+        while page < 5:
             response = requests.get(
                 f'https://catalog.wb.ru/catalog/product1/v2/catalog?appType=1&curr=rub&dest=-1257786&page={page}&{self.query}')
 
@@ -50,7 +52,7 @@ class Parser:
             if not items_info.products:
                 break
             self.__get_images(items_info)
-            self.__get_descriptions(items_info)
+            asyncio.run(self.get_descriptions(items_info))
             self.__save_csv(items_info)
     
     def __create_csv(self):
@@ -118,25 +120,27 @@ class Parser:
             _vol = product.id//100000
             basket = self.__get_basket_info(_vol)
             
-            # url = f'https://basket-{basket}.wbbasket.ru/vol{_vol}/part{product.id//1000}/{product.id}/images/big/1.jpg'
-            # res = requests.get(url=url)
-            # if res.status_code == 200:
-                
-            # for pics
             pic_link = ''.join([f'https://basket-{basket}.wbbasket.ru/vol{_vol}/part{product.id//1000}/{product.id}/images/big/{i}.jpg;' for i in range(1, product.pics+1)])
             product.image_links = pic_link 
             pic_link = ''
     
-    def __get_descriptions(self, item_model: Items):
-            # for descriptions
-        for product in item_model.products:
-            _vol = product.id//100000
-            basket = self.__get_basket_info(_vol)
+    async def __parse_desc(self, product, vol, session):
+        basket = self.__get_basket_info(vol)
+        desc_link = f'https://basket-{basket}.wbbasket.ru/vol{vol}/part{product.id//1000}/{product.id}/info/ru/card.json'
 
-            desc_link = f'https://basket-{basket}.wbbasket.ru/vol{_vol}/part{product.id//1000}/{product.id}/info/ru/card.json'
-            response = requests.get(desc_link).json()
-            product.description = response['description']
-            desc_link = ''
+        async with session.get(url=desc_link) as response:
+            response_text = await response.json()
+            product.description = response_text['description']
+    
+    async def get_descriptions(self, item_model: Items):
+        async with aiohttp.ClientSession() as session:
+            tasks = []
+            # for descriptions
+            for product in item_model.products:
+                _vol = product.id//100000
+                task = asyncio.create_task(self.__parse_desc(product, _vol, session))
+                tasks.append(task)
+            await asyncio.gather(*tasks)
 
 if __name__ == '__main__':
     p = Parser('https://www.wildberries.ru/catalog/pitanie/chay-kofe/chay')
