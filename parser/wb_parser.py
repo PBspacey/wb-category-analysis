@@ -142,6 +142,8 @@ class Parser:
                 tasks.append(task)
             await asyncio.gather(*tasks)
 
+
+
 if __name__ == '__main__':
     p = Parser('https://www.wildberries.ru/catalog/pitanie/chay-kofe/chay')
     print(p.query)
