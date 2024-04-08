@@ -6,10 +6,11 @@ import os
 
 
 def get_categories(file:str):
+
     df = pd.read_csv(file)
-
+    df = df[df['количество оценок']>=100]
     df['категория рейтинга'] = pd.cut(df['рейтинг'], 5)
-
+    
     return df
 
 async def download(session, image_link, category, id):
@@ -31,10 +32,10 @@ async def save_images(df):
                     tasks.append(task)
         await asyncio.gather(*tasks)
 
-def get_images(file, inplace=False):
-    if inplace:
+def get_images(file, new_df=False):
+    if new_df:
         df = get_categories(file)
-        df.to_csv(file)
+        df.to_csv(file[:-4] + '_after_images.csv', index=False)
         asyncio.run(save_images(df))
     else:
         df = get_categories(file)

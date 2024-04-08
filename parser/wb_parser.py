@@ -36,7 +36,7 @@ class Parser:
     def parse(self):
         page = 1
         self.__create_csv()
-        while page < 5:
+        while page < 50:
             response = requests.get(
                 f'https://catalog.wb.ru/catalog/product1/v2/catalog?appType=1&curr=rub&dest=-1257786&page={page}&{self.query}')
 
@@ -58,7 +58,7 @@ class Parser:
     def __create_csv(self):
         with open(f'wb_parse_{self.query}.csv', mode='w', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
-            writer.writerow(['id', 'бренд', 'id бренда', 'название', 'цена', 'бренд', 'рейтинг', 'количество оценок', 'айди поставщика', 'рейтинг поставщика', 'в наличии', 'ссылка на фото', 'описание'])
+            writer.writerow(['id', 'бренд', 'id бренда', 'название', 'цена', 'рейтинг', 'количество оценок', 'айди поставщика', 'рейтинг поставщика', 'в наличии', 'ссылка на фото', 'описание'])
 
     def __save_csv(self, items):
         with open(f'wb_parse_{self.query}.csv', mode='a', newline='', encoding='utf-8-sig') as file:
@@ -69,7 +69,6 @@ class Parser:
                                  product.brandId,
                                  product.name, 
                                  product.price, 
-                                 product.brand,
                                  product.reviewRating,
                                  product.feedbacks,
                                  product.supplierId,
@@ -130,7 +129,10 @@ class Parser:
 
         async with session.get(url=desc_link) as response:
             response_text = await response.json()
-            product.description = response_text['description']
+            if 'description' in response_text.keys():
+                product.description = response_text['description'] 
+            else:
+                product.description = ""
     
     async def get_descriptions(self, item_model: Items):
         async with aiohttp.ClientSession() as session:
