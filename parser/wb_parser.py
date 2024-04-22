@@ -36,7 +36,7 @@ class Parser:
     def parse(self):
         page = 1
         self.__create_csv()
-        while page < 50:
+        while True:
             response = requests.get(
                 f'https://catalog.wb.ru/catalog/product1/v2/catalog?appType=1&curr=rub&dest=-1257786&page={page}&{self.query}')
 
@@ -64,19 +64,20 @@ class Parser:
         with open(f'wb_parse_{self.query}.csv', mode='a', newline='', encoding='utf-8-sig') as file:
             writer = csv.writer(file)
             for product in items.products:
-                writer.writerow([product.id,
-                                 product.brand,
-                                 product.brandId,
-                                 product.name, 
-                                 product.price, 
-                                 product.reviewRating,
-                                 product.feedbacks,
-                                 product.supplierId,
-                                 product.supplierRating,
-                                 product.volume,
-                                 product.image_links,
-                                 product.description
-                                 ])
+                if product.reviewRating < 4:
+                    writer.writerow([product.id,
+                                    product.brand,
+                                    product.brandId,
+                                    product.name, 
+                                    product.price, 
+                                    product.reviewRating,
+                                    product.feedbacks,
+                                    product.supplierId,
+                                    product.supplierRating,
+                                    product.volume,
+                                    product.image_links,
+                                    product.description
+                                    ])
 
     @staticmethod
     def __get_basket_info(id:int):

@@ -28,7 +28,7 @@ async def save_images(df):
         for index, row in df.iterrows():
             for i, link in enumerate(row['ссылка на фото'].split(';')[:3]):
                 if link != "":
-                    task = asyncio.create_task(download(session, link, str(row['категория рейтинга']), f"{row['id']}_{i}"))
+                    task = asyncio.create_task(download(session, link, str(row['target']), f"{row['id']}_{i}"))
                     tasks.append(task)
         await asyncio.gather(*tasks)
 
@@ -42,4 +42,7 @@ def get_images(file, new_df=False):
         asyncio.run(save_images(df))
 
 if __name__ == "__main__":
-    get_images('wb_parse_subject=406.csv')
+    # get_images('wb_parse_subject=406.csv')
+    # df = pd.read_csv('images_ready.csv')
+    df = pd.read_csv('worst_images.csv')
+    asyncio.run(save_images(df))
