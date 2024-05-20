@@ -2,3 +2,6 @@
 /parser/async_test.py
 /images
 /parser/artefacts
+/images_labeled.tsv
+/texts_labeled.tsv
+/wb_parse_subject=406after_images.csv
