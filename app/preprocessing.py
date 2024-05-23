@@ -1,17 +1,28 @@
 # import nltk
 import numpy as np 
+import re
+import string
+import pandas as pd
 import torch
 from torchvision import transforms
+from nltk.corpus import stopwords
+from pymorphy3 import MorphAnalyzer
+from gensim.models.doc2vec import TaggedDocument
 from PIL import Image
 
-# from models import nlp_model
 
-
-def text_preprocessing(text:str) -> np.array:
+def text_preprocessing(text) -> np.array:
     '''
     takes text to the input and preprocess it to the format needed to prediction
     '''
-    def lemmatize(text:str):
+    if isinstance(text, str):
+        text = pd.Series(text)
+
+    patterns = '[^0-9а-яА-ЯёЁ\s]+'
+    stopwords_ru = stopwords.words("russian")
+    morph = MorphAnalyzer()
+
+    def lemmatize(text):
         '''
         takes text, extract lemma for each word and remove stopwords
         '''
@@ -39,10 +50,11 @@ def text_preprocessing(text:str) -> np.array:
 
         return lematized_text
     
-    preprocessed_text = preprocess_text(text)
-    embedding = nlp_model.doc2vec.infer(preprocessed_text)
+    preprocessed_text = text.apply(lambda x: preprocess_text(x))
 
-    return embedding
+    tagged_data = [TaggedDocument(words=d, tags=[str(i)]) for i, d in enumerate(preprocessed_text)]
+
+    return tagged_data
 
 
 def image_preprocessing(image_path:str) -> torch.tensor:
@@ -66,4 +78,7 @@ def image_preprocessing(image_path:str) -> torch.tensor:
 
 
 if __name__ == '__main__':
-    print(image_preprocessing('C:/Users/senia/Desktop/wb sphere analysis/images/0/50.jpg'))
+    # print(image_preprocessing('C:/Users/senia/Desktop/wb sphere analysis/images/0/50.jpg'))
+    text = pd.read_csv('/Users/nikitasenyatkin/Downloads/texts_labeled.tsv', sep='\t')
+    text = pd.Series(text['INPUT:comment'])
+    text_preprocessing(text)
