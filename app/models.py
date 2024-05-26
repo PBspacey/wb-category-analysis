@@ -6,7 +6,6 @@ from catboost import CatBoostClassifier
 
 
 
-
 class Doc2VecModel:
     def __init__(self, model_path):
         self.model_path = model_path
@@ -79,7 +78,7 @@ class CVmodel:
 
     def load_model(self, model_path):
         try:
-            torch.load(model_path)
+            model = torch.load(model_path)
             print(f"Model loaded successfully from {model_path}")
             return model
         except Exception as e:
@@ -99,9 +98,9 @@ class CVmodel:
         
         input = self.preprocess(path_to_image)
 
-        model.eval()
-        with torch.no_grad:
-            preds = model(input)
+        self.model.eval()
+        with torch.no_grad():
+            preds = torch.sigmoid(self.model(input))
         
         return preds
 
@@ -109,7 +108,6 @@ class CVmodel:
     
 
 if __name__ == '__main__':
-    # print(image_preprocessing('C:/Users/senia/Desktop/wb sphere analysis/images/0/50.jpg'))
     model = Doc2VecModel('./models/doc2vec.model')
     text = pd.read_csv('/Users/nikitasenyatkin/Downloads/texts_labeled.tsv', sep='\t')
     text = pd.Series(text['INPUT:comment'])[:3]
@@ -118,6 +116,8 @@ if __name__ == '__main__':
     cb = CBclassifier('./models/CB.cbm')
     print(cb.infer(d2v))
 
-    cv = CVmodel('./models/cvResNet.pth')
+    cv = CVmodel('/Users/senia/Desktop/wb sphere analysis/wb-category-analysis/models/cvResNet.pth')
     print(cv.infer('C:/Users/senia/Desktop/wb sphere analysis/images/0/50.jpg'))
+
+
 
