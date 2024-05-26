@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+      .header {
+        font-size: 1.25em; /* Размер шрифта */
+        font-weight: bold; /* Жирность шрифта */
+        color: inherit; /* Цвет шрифта */
+        text-decoration: none; /* Без подчеркивания для ссылок */
+      }
+    </style>   
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/cover/">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+<body>
+  <!-- hat -->
+  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <a class="my-0 mr-md-auto font-weight-normal header" href="/">Cardvaluator</a> 
+    <nav class="my-2 my-md-0 mr-md-3">
+      <a class="p-2 text-dark" href="/">Главная</a>
+      <a class="p-2 text-dark" href="/about">Общие знания</a>
+      <a class="p-2 text-dark" href="https://github.com/PBspacey/wb-category-analysis">Документация</a>
+    </nav>
+  </div>
+
+  {% block body %}{% endblock %}
+  
+</div>  
+</body>
+</html>
