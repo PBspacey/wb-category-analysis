@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Результаты оценивания
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% if mn %}
+    <h1 class="display-4"> Привлекательность изображения: {{ cv_pred }}%</h1>
+    <h1 class="display-4"> Общая привлекательность: {{ mn }}%</h1>
+    <h1 class="display-4"> Привлекательность описания: {{ nlp_pred }}</h1>
+
+    {% elif not mn and cv_pred %}
+    <h1 class="display-4"> Привлекательность изображения: {{ cv_pred }}%</h1>
+
+    {% elif not mn and nlp_pred %}
+    <h1 class="display-4"> Привлекательность описания: {{ nlp_pred }}%</h1>
+
+    {% else %} 
+    <h1 class="display-4"> Вы не загрузили ни картинку, ни описание</h1>
+    {% endif %}
+
+</div>
+
+{% endblock %}
