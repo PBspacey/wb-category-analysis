@@ -7,20 +7,135 @@
 {% block body %}
 <div class="container">
     {% if mn %}
-    <h1 class="display-4"> Привлекательность изображения: {{ cv_pred }}%</h1>
-    <h1 class="display-4"> Общая привлекательность: {{ mn }}%</h1>
-    <h1 class="display-4"> Привлекательность описания: {{ nlp_pred }}</h1>
-
+        {% if mn < 50 %}
+            <h1 class="display-4 text-center">Надо подправить</h1>
+            <br>
+        {% elif mn >=50 and mn < 70 %}
+            <h1 class="display-4 text-center">Неплохо, но можно улучшить</h1> 
+            <br>
+        {% else %}
+            <h1 class="display-4 text-center">Отлично!</h1> 
+            <br>
+        {% endif %} 
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Изображение</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ cv_pred  }}<small class="text-muted">%</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Уровень привлекательности изображения</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Общая оценка</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ mn }}<small class="text-muted">%</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Общий уровень привлекательности</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Описание</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ nlp_pred }}<small class="text-muted">%</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Уровень привлекательности описания</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
     {% elif not mn and cv_pred %}
-    <h1 class="display-4"> Привлекательность изображения: {{ cv_pred }}%</h1>
+      {% if cv_pred < 50 %}
+        <h1 class="display-4 text-center">Надо подправить</h1>
+        <br>
+      {% elif cv_pred >= 50 and cv_pred < 70 %}
+        <h1 class="display-4 text-center">Неплохо, но можно улучшить</h1>
+        <br>
+      {% else %}
+        <h1 class="display-4 text-center">Отлично!</h1>
+        <br>
+      {% endif %}
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Изображение</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ cv_pred  }}<small class="text-muted">%</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Уровень привлекательности изображения</li>
+            </ul>
+          </div>
+        </div>
+    </div>
 
     {% elif not mn and nlp_pred %}
-    <h1 class="display-4"> Привлекательность описания: {{ nlp_pred }}%</h1>
+        {% if nlp_pred < 50 %}
+            <h1 class="display-4 text-center">Надо подправить</h1>
+            <br>
+        {% elif nlp_pred >= 50 and nlp_pred < 70 %}
+            <h1 class="display-4 text-center">Неплохо, но можно улучшить</h1>
+            <br>
+         {% else %}
+            <h1 class="display-4 text-center">Отлично!</h1>
+            <br>
+        {% endif %}
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">Описание</h4>
+        </div>
+        <div class="card-body">
+            <h1 class="card-title pricing-card-title">{{ nlp_pred  }}<small class="text-muted">%</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+            <li>Уровень привлекательности описания</li>
+            </ul>
+        </div>
+        </div>
+    </div>
 
     {% else %} 
-    <h1 class="display-4"> Вы не загрузили ни картинку, ни описание</h1>
+    <h1 class="display-4 text-center"> Вы не загрузили ни картинку, ни описание, <a href="/evaluate">вернуться</a></h1>
     {% endif %}
 
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <a href="/evaluate" class="btn btn-primary">Вернуться</a>
+            </div>
+            <div class="col">
+                <a href="/evaluate/result/detailed" class="btn btn-secondary">Подробнее</a>
+            </div>
+            <div class="col">
+                <a href="/about" class="btn btn-secondary">Базовые советы</a>
+            </div>
+        </div>
+    </div>
+
+    {% if cv_cam %}
+        <br>
+        <h1 class="display-4 text-center">Gradient cam изображения</h1>
+        <p class="lead part1">Чем краснее на карте зона, тем больше модель обращает внимание на этот элемент на картинке, соответственно, если опроцент привлекательности низкий, то красная зона сигнализирует о том, что на нее нужно в первую очередь обратить внимание при исправлении</p>
+        <br>
+        <center>
+        <img src="data:image/png;base64, {{ cv_cam }}" alt="Generated Image">
+        </center>
+    {% endif %}
+
+    {% if nlp_cam %}
+        <br>
+        <h1 class="display-4 text-center">Аналитика описания</h1>
+        <p class="lead part1">{{ nlp_cam }}</p>
+    {% endif %}
 </div>
 
 {% endblock %}

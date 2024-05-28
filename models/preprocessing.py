@@ -7,8 +7,8 @@ import torch
 from torchvision import transforms
 from nltk.corpus import stopwords
 from pymorphy3 import MorphAnalyzer
-from gensim.models.doc2vec import TaggedDocument
 from PIL import Image
+
 
 
 def text_preprocessing(text) -> np.array:
@@ -52,9 +52,7 @@ def text_preprocessing(text) -> np.array:
     
     preprocessed_text = text.apply(lambda x: preprocess_text(x))
 
-    tagged_data = [TaggedDocument(words=d, tags=[str(i)]) for i, d in enumerate(preprocessed_text)]
-
-    return tagged_data
+    return preprocessed_text
 
 
 def image_preprocessing(image_path:str) -> torch.tensor:

@@ -27,7 +27,7 @@ def about_page():
 def evaluate_page():
     return render_template('evaluate.html')
 
-@app.route('/eval_result', methods=['POST', 'GET'])
+@app.route('/evaluate/result', methods=['POST', 'GET'])
 def process_form():
 
     text = request.form['textinput']
@@ -36,6 +36,8 @@ def process_form():
     nlp_pred = None
     cv_pred = None 
     mn = None
+    cv_cam = None
+    nlp_cam = None
 
     if text and file:
 
@@ -50,12 +52,15 @@ def process_form():
         mn = round(float(200/((1/cv_pred[:,1][0]) + (1/nlp_pred[:,1][0]))), 2)
         nlp_pred = round(nlp_pred[:,1][0]*100, 2)
         cv_pred = round(float(cv_pred[:,1][0]*100), 2)
+        cv_cam = cv.create_gradient_cam(file)
+        nlp_cam = d2v.nlp_cam(text)
 
     
     elif file and not text: 
         cv = CVmodel()
         cv_pred = cv.infer(file)
         cv_pred = round(float(cv_pred[:,1][0]*100), 2)
+        cv_cam = cv.create_gradient_cam(file)
 
     
     elif not file and text:
@@ -65,9 +70,10 @@ def process_form():
         vectors = d2v.infer(text)
         nlp_pred = cb.infer(vectors)
         nlp_pred = round(nlp_pred[:,1][0]*100, 2)
+        nlp_cam = d2v.nlp_cam(text)
 
 
-    return render_template('eval_result.html', nlp_pred=nlp_pred, cv_pred=cv_pred, mn=mn)
+    return render_template('eval_result.html', nlp_pred=nlp_pred, cv_pred=cv_pred, mn=mn, cv_cam=cv_cam, nlp_cam=nlp_cam)
 
 if __name__ == '__main__':
     app.run(debug=True)
