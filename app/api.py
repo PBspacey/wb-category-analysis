@@ -3,8 +3,6 @@ from models.models import Doc2VecModel, CBclassifier, CVmodel
 import os
 
 
-current_directory = os.getcwd()
-print("Текущая рабочая директория:", current_directory)
 
 new_directory = "."
 os.chdir(new_directory)
@@ -76,4 +74,4 @@ def process_form():
     return render_template('eval_result.html', nlp_pred=nlp_pred, cv_pred=cv_pred, mn=mn, cv_cam=cv_cam, nlp_cam=nlp_cam)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
