@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+
+{% block body %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Оценить картинку и описание товара стало проще:</h1>
+    <br>
+    <p class="lead">Загрузите картинку и/или описание товара, и мы оценим вероятность того, насколько сильно товар заинтересует потенциального покупателя, основываясь на мнениях других людей</p>
+  </div>
+  
+  <!-- make buttons -->
+  <div class="container">
+  <div class="card-deck mb-3 text-center">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">О приложении</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>Мы обучили нейронную сеть давать объективную оценку атрибутам карточки товара, а также выявили тенденции привлекательности товара по атрибутам</li>
+          </ul>
+          <a class="btn btn-lg btn-block btn-primary" href="/about">Подробнее</a>
+        </div>
+      </div>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">Попробуем?</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>Выберите категорию товара и загрузите атрибуты карточки товара, нейронная сеть оценит их привлекательность и выдаст оценку</li>
+        </ul>
+        <a class="btn btn-lg btn-block btn-primary" href="/evaluate">Оценить</a>
+      </div>
+    </div>
+
+{% endblock %}

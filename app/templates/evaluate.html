@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Оценить
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <form action="#">
+      <label for="product"><p class="lead part1">Выберите товар:</p></label>
+      <select id="product" name="product">
+        <option value="tea">Чай</option>
+      </select>
+    </form>
+    <br> 
+    <p class="lead part1">Загрузите изображение товара и текст описания, нейронная сеть выдаст оценку привлекательности этих атрибутов.
+        <a href="/about">Советы</a> по улучшению привлекательности картинки и описания</p>
+    <!-- Form for inputting text -->
+    <!-- Form for uploading image -->
+    <br>
+    <form action="/evaluate/result" method="post" enctype="multipart/form-data">
+        <label for="file"><p class="lead part1">Выбрать изображение:</p></label>
+        <input type="file" id="file" name="file" accept="image/*" >
+        <label for="textinput"><p class="lead part1">Введите текст описания:</p></label>
+        <input type="text" id="textinput" name="textinput" >
+        <button type="submit">Загрузить</button>
+    </form>
+
+  </div>
+  
+  
+{% endblock %}

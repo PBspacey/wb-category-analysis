@@ -1,0 +1,27 @@
+.pricing-header .display-4 {
+    margin-bottom: 2px;
+    /* font-size: 2rem; Размер шрифта для заголовка класса "display-4" в блоке с классом "pricing-header" */
+}
+
+.pricing-header .subdisplay {
+    margin-top: 0px;
+    font-size: 2rem; /* Размер шрифта для заголовка класса "display-4" в блоке с классом "pricing-header" */
+    font-weight: normal
+}
+
+.pricing-header .subdisplay2 {
+    margin-top: 0px;
+    font-size: 1.5rem; /* Размер шрифта для заголовка класса "display-4" в блоке с классом "pricing-header" */
+    font-weight: normal
+}
+
+.desc .lead {
+    font-size: 1.25rem; /* Размер шрифта для текста класса "lead" в блоке с классом "pricing-header" */
+}
+
+.my-0 mr-md-auto font-weight-normal {
+    font-size: 1.25em; /* Размер шрифта */
+    font-weight: bold; /* Жирность шрифта */
+    color: inherit; /* Цвет шрифта */
+    text-decoration: none; /* Без подчеркивания для ссылок */
+}
