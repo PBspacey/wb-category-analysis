@@ -60,9 +60,9 @@ class Doc2VecModel:
 
         n = '\n'
         return f'Слова в описании, оказывающие положительное влияние на привлекательность:\n' \
-            f'{n}{" ".join(list(pos_intercept)) if pos_intercept else "таких слов нет"}.\n' \
+            f'{n}{", ".join(list(pos_intercept)) if pos_intercept else "таких слов нет"}.\n' \
             f'Слова, оказывающие негативное влияние на привлекательность:\n' \
-            f'{n}{" ".join(list(neg_intercept)) if neg_intercept else "таких слов нет"}'
+            f'{n}{", ".join(list(neg_intercept)) if neg_intercept else "таких слов нет"}'
 
 
         
